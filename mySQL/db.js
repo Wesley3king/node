@@ -16,4 +16,11 @@ const mostrar = async ()=>{
     return await linhas;
 };
 
-module.exports = {mostrar};
+const inserir = async (cliente) => {
+    let con = await conectar();
+    let sql = "insert into cliente values (?,?,?)";
+    let valores = [cliente.indice,cliente.nome, cliente.idade];
+    await con.query(sql, valores);
+}
+
+module.exports = {mostrar,inserir};
