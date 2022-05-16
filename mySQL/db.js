@@ -23,4 +23,17 @@ const inserir = async (cliente) => {
     await con.query(sql, valores);
 }
 
-module.exports = {mostrar,inserir};
+const atualizar = async (id,cliente) => { 
+    const con = await conectar();
+    const sql = "update cliente set nasc=? where indice=?";
+    const valores = [cliente.nasc, id];
+    await con.query(sql,valores);
+}
+
+const deletar = async (id)=>{
+    const con = await conectar();
+    const sql = "delete from cliente where indice=?";
+    const valores = [id];
+    await con.query(sql,valores);
+}
+module.exports = {mostrar, inserir, atualizar, deletar};
