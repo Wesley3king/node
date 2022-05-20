@@ -40,8 +40,8 @@ async function obter () {
 
   delete small;
   let resultado = [];
-   fatia.forEach(element => {
-    
+   fatia.forEach((element,indice) => {
+    resultado.push([element[1]])
   });
 console.log(`elemento : `,elemento);
 //console.log(elemento);
