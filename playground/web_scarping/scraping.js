@@ -15,17 +15,24 @@ async function obter () {
     //await page.goto('https://mundomangakun.com.br/');
    //await page.screenshot({path: 'example6.png'})
    const elemento = await page.evaluate(()=>{
-       
-       let c = document.querySelectorAll(".post-projeto-background");
-       return getComputedStyle(c['0']).backgroundImage;
+       let nome = document.querySelectorAll(".titulo-cap").innerHTML;
+        return nome;
+       /*let c = document.querySelectorAll(".post-projeto-background");
+       return getComputedStyle(c['0']).backgroundImage;*/
    }).catch(e => console.log(e));
 
    /*var css = Object.keys(elemento).reduce(
     (obj, prop) => (prop.match(/\D/) && (obj[prop] = styles[prop]), obj), {}
   );*/
-
+console.log(`elemento : `,elemento);
+console.log(elemento);
+        let nomes = [];
+        for (let i= 0; i< elemento.length; ++i) {
+          nomes.push(elemento[`${i}`]);
+          console.log(elemento[`${i}`]);
+        }
     await browser.close();
-    console.log(elemento);
+    console.log(nomes);
 
 }
 
