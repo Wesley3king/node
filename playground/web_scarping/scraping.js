@@ -24,9 +24,14 @@ async function obter () {
          rr.push(nome[nn[i]].innerHTML);
        }
 
-        return rr;
-       /*let c = document.querySelectorAll(".post-projeto-background");
-       return getComputedStyle(c['0']).backgroundImage;*/
+       let c = document.querySelectorAll(".post-projeto-background");
+       let imagem = [],ind = Object.keys(c);
+       for (let i = 0; i < ind.length; ++i) {
+        imagem.push(getComputedStyle(c[ind[i]]).backgroundImage);
+       }
+       
+        return [rr,imagem];
+       
    }).catch(e => console.log(e));
 
    
@@ -34,24 +39,19 @@ async function obter () {
     (obj, prop) => (prop.match(/\D/) && (obj[prop] = styles[prop]), obj), {}
   );*/
 
-  let fatia = elemento.map(item => item.split("\t\t\t\t\t\t\t\t"));
+  let fatia = elemento[0].map(item => item.split("\t\t\t\t\t\t\t\t"));
   let small = fatia.map( itens => itens[2].split("<small>"));
   let smallDone = small.map( itens => itens[1].split(" |"));
 
   delete small;
   let resultado = [];
    fatia.forEach((element,indice) => {
-    resultado.push([element[1]])
+    resultado.push([element[1],smallDone[indice][0],elemento[1][indice]]);
   });
-console.log(`elemento : `,elemento);
-//console.log(elemento);
-        /*let nomes = [];
-        let nn = Object.keys(elemento);
-        for (let i= 0; i< nn.length; ++i) {
-          nomes.push(elemento[nn[i]].innerHTML);
-        }*/
+  delete smallDone, fatia;
+console.log(`resultado : `,resultado);
+//console.log(`imagem : `, elemento[1]);
     await browser.close();
-    console.log(smallDone);
 
 }
 
