@@ -1,8 +1,8 @@
 //const request = require("request");
-const { map } = require("cheerio/lib/api/traversing");
-const express = require("express");
+//const { map } = require("cheerio/lib/api/traversing");
+//const express = require("express");
 const puppeteer = require("puppeteer");
-const app = express();
+//const app = express();
 
 
 async function obter () {
@@ -106,17 +106,61 @@ async function obterInterno (url) {
     //tratamento de sinopse
     let fase1 = info[0].split(">");
     let fase2 = fase1[1].split("<");
-    //console.log(fase2[0]);
 
     //tratando links de capitulo
     let href_l = info[1].map(item=> item.replace(/[\\]/g,""));
     let fatia1 = href_l.map(item=> item.split("link':'"));
     let fatia2 = fatia1.map(sub => sub[1].split("','"));
     
-    delete fase1, href_l, fatia1;
-    console.log(info[2]);
-    //console.log(fatia2);
+    delete fase1, href_l, fatia1,href_l;
+    let data = [fase2[0], info[2].map((item ,indice) => [item,fatia2[indice][0]])];
+    console.log(data);
     await browser.close();
 }
 
-obterInterno('https://mundomangakun.com.br/projeto/yuusha-sama-yukagen-wa-ikaga-desu-ka/');
+//obterInterno('https://mundomangakun.com.br/projeto/yuusha-sama-yukagen-wa-ikaga-desu-ka/');
+
+async function leitor (url) {
+    let browser = await puppeteer.launch({ 
+        args :  [ '--disable-dev-shm-usage', '--shm-size=1gb' ],
+        headless: false
+      });
+      let page = await browser.newPage();
+
+      await page.setRequestInterception(true);
+        page.on('request', (req) => {
+            if(req.resourceType() === 'image'){
+                req.abort();
+                }
+                else {
+                req.continue();
+            }
+        });
+
+        await page.goto(url);
+        
+        await page.waitForSelector("#btn_ok_mais_18");
+        await page.click('#btn_ok_mais_18');
+        await page.waitForSelector("#label_leitor_paginacao_completo");
+        //await page.click("#label_leitor_paginacao_completo");
+        await page.evaluate(()=> {
+            let radio = document.querySelector("#label_leitor_paginacao_completo");
+            radio.click();
+        })
+        await page.waitForSelector("img.pagina_capitulo");
+        await page.waitForTimeout(1000);
+         //coleta de dados
+        const dados = await page.evaluate(()=> {
+            let paginas = document.querySelectorAll(".pagina_capitulo");
+            let ind = Object.keys(paginas), img = [];
+            for (let i =0; i < ind.length; ++i) {
+                img.push(paginas[ind[i]].getAttribute("src"));
+            }
+            return img;
+        })
+
+        console.log(dados);
+
+  await browser.close()
+}
+leitor('https://mundomangakun.com.br/leitor-online/projeto/yuusha-sama-yukagen-wa-ikaga-desu-ka/cap-tulo-04/#pagina/1')
