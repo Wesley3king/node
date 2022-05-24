@@ -44,51 +44,58 @@ async function obter () {
    //obtem = fatia nome do manga, link link para o main, img imagem
    let fatia1 = elemento.map( str => str.split('/">'));
    
-   let fatia_2 = []//,fatia_3 = [], fatia_6 = [];//6 - lacanmentos,2 - ultimos adicionados, 3 - populares
+   let fatia_2 = [],fatia_3 = [], fatia = [];//6 - lacanmentos,2 - ultimos adicionados, 3 - populares
    let link = [],link_2 = [], link_3 = [];
-   let img = [];
+   let img = [], img_6 = [], img_2 = [];
 
    for(let i = 0; i < fatia1.length; ++i) {
    if (fatia1[i].length === 2){
     fatia_2.push(fatia1[i][1].split("</a"));
     link_2.push(fatia1[i][0].split('" href="'));
-    img.push(fatia1[i][0].split('src="'));
+    img_2.push(fatia1[i][0].split('src="'));
+    console.log(fatia1[i]);
 
    }else if (fatia1[i].length === 6) {
-    fatia_2.push(fatia1[i][5].split("</a"));
+    fatia.push(fatia1[i][5].split("</a"));
     link.push(fatia1[i][4].split(' href="'));
-    img.push(fatia1[i][0].split('src="'));
+    img_6.push(fatia1[i][0].split('src="'));
 
    }else if (fatia1[i].length === 3) {
-    fatia_2.push(fatia1[i][2].split("</a"));
+    fatia_3.push(fatia1[i][2].split("</a"));
     link_3.push(fatia1[i][1].split('" href="'));
     img.push(fatia1[i][0].split('src="'));
 
    }
   }
-console.log(link_2,link_3,link);
+//console.log(link_2,link_3,link);
 //finalizando links
-let f_link = [];
+let l_link = [], p_link = [], u_link = [];
 
 for(let i of link_3) {
   //console.log(i);
-  f_link.push(i[1]);
+  u_link.push(i[1]);//ultimos add
 }
 for (let i of link_2) {
-  f_link.push(i[2]);
+  p_link.push(i[2]);//populares
 }
-for(let i of link_3) {
+for(let i of link) {
   //console.log(i);
-  f_link.push(i[1]);
+  l_link.push(i[1]);//lancamentos
 }
   //finalizando imagens
-  let imagems = img.map(arr => arr[1].split('" data-'));
+  let image_6 = img_6.map(arr => arr[1].split('" data-'));
+  let image_2 = img_2.map(arr => arr[1].split('" data-'));
+  //console.log();
   
-  console.log(f_link);
-  
+  //montando o array
+  //lancamentos
+  let f1 = l_link.map((anc, ind) => [fatia[ind][0],image_6[ind][0],anc]);
+  //populares
+  let f2 = p_link.map((lnk, ind) => [fatia_2[ind][0], image_2[ind][0]])
+  console.log(f2);
   //let dados = imagems.map((ima, indice) => [fatia_2[indice][0],ima[0],link[indice][1]]);
 
-   //console.log(dados);
+   //console.log(img_6);
     await browser.close();
 
 }
