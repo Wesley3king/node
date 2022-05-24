@@ -8,7 +8,7 @@ const puppeteer = require("puppeteer");
 async function obter () {
     
     const browser = await puppeteer.launch({ 
-        args :  [ '--disable-dev-shm-usage', '--shm-size=2gb' ],
+        args :  [ '--disable-dev-shm-usage', '--shm-size=1gb' ],
         headless: true
       });
     const page = await browser.newPage();
@@ -67,37 +67,80 @@ async function obter () {
 
    }
   }
-//console.log(link_2,link_3,link);
 //finalizando links
 let l_link = [], p_link = [], u_link = [];
 
 for(let i of link_3) {
-  //console.log(i);
   u_link.push(i[1]);//ultimos add
 }
 for (let i of link_2) {
   p_link.push(i[2]);//populares
 }
 for(let i of link) {
-  //console.log(i);
   l_link.push(i[1]);//lancamentos
 }
   //finalizando imagens
   let image_6 = img_6.map(arr => arr[1].split('" data-'));
   let image_2 = img_2.map(arr => arr[1].split('" data-'));
-  //console.log();
+  let image_3 = img.map(arr => arr[1].split('" data-'));
+
+  
   
   //montando o array
   //lancamentos
-  let f1 = l_link.map((anc, ind) => [fatia[ind][0],image_6[ind][0],anc]);
+  let f1 = l_link.map((lnk, ind) => [fatia[ind][0], image_6[ind][0], lnk]);
   //populares
-  let f2 = p_link.map((lnk, ind) => [fatia_2[ind][0], image_2[ind][0]])
-  console.log(f2);
-  //let dados = imagems.map((ima, indice) => [fatia_2[indice][0],ima[0],link[indice][1]]);
+  let f2 = p_link.map((lnk, ind) => [fatia_2[ind][0], image_2[ind][0], lnk]);
+  //ultimos adicionados
+  let f3 = u_link.map((lnk,ind) => [fatia_3[ind][0], image_3[ind][0], lnk]);
+  
+  delete image_2, image_3, image_6, fatia1, fatia_2, fatia_3, fatia, l_link, p_link, u_link, elemento;
+  //finalizando
 
-   //console.log(img_6);
+  let dados = {
+    lancamentos : f1,
+    popular : f2,
+    atualizados : f3
+  }
+
+   console.log(dados);
     await browser.close();
 
 }
 
-obter();
+//obter();
+
+//pagina de selecão de capitulos
+
+async function entrar (url) {
+      const browser = await puppeteer.launch({ 
+        args :  [ '--disable-dev-shm-usage', '--shm-size=1gb' ],
+        headless: false
+      });
+    const page = await browser.newPage();
+
+    await page.setRequestInterception(true);
+    page.on('request', (req) => {
+        if(req.resourceType() === 'image'){
+            req.abort();
+            }
+            else {
+            req.continue();
+        }
+    });
+
+    await page.goto(url);
+    await page.waitForTimeout(3000);
+
+    const elemento = await page.evaluate(()=>{
+        let paragrafos = document.querySelectorAll("p");
+
+        return paragrafos;
+    });
+
+    console.log(elemento);
+    
+    await browser.close();
+}
+
+entrar('https://mangayabu.top/manga/solo-leveling');
