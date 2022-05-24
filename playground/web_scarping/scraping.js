@@ -119,7 +119,7 @@ async function entrar (url) {
       });
     const page = await browser.newPage();
 
-    await page.setRequestInterception(true);
+   /* await page.setRequestInterception(true);
     page.on('request', (req) => {
         if(req.resourceType() === 'image'){
             req.abort();
@@ -127,15 +127,25 @@ async function entrar (url) {
             else {
             req.continue();
         }
-    });
+    });*/
 
     await page.goto(url);
     await page.waitForTimeout(3000);
 
     const elemento = await page.evaluate(()=>{
+      //sinopse
         let paragrafos = document.querySelectorAll("p");
-
-        return paragrafos;
+        let chaves = Object.keys(paragrafos), cont = [];
+        for (let i = 0; i < chaves.length; ++i) {
+          cont.push(paragrafos[chaves[i]].innerHTML);
+        }
+        //categorias
+        let cat = document.querySelectorAll(".genre-tag");
+        let chaves2 = Object.keys(cat), typ = [];
+        for (let i = 0; i < chaves.length; ++i) {
+          typ.push(cat[chaves2[i]].innerHTML);
+        }
+        return [cont[1], typ];
     });
 
     console.log(elemento);
