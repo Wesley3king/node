@@ -208,15 +208,23 @@ async function leitor (url) {
     await page.waitForTimeout(3000);
 
     const elemento = await page.evaluate(()=>{
+      //paginas
       let imgs = document.querySelector(".section.table-of-contents");
+      //capa do manga
+      let cp = document.querySelector(".manga-cover-single");
 
-      return [imgs.innerHTML];
+      return [cp, imgs.innerHTML];
     });
 
     //recortando as imagems
-    let img_pt1 = elemento[0].split('">');
-    //let img_pt2 = img_pt1.map(str => str)
-    console.log(img_pt1);
+    let img_pt1 = elemento[1].split('">');
+    let img_pt2 = img_pt1.map(str => str.split('-src="'));//link na posicaõ 1;
+    //let img_pt2 = img_pt1.map(str => str);
+
+    //remove o excesso
+    img_pt2.pop();
+    
+    console.log(img_pt2);
     browser.close();
 }
 
