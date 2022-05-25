@@ -210,10 +210,13 @@ async function leitor (url) {
     const elemento = await page.evaluate(()=>{
       let imgs = document.querySelector(".section.table-of-contents");
 
-      return imgs.innerHTML;
+      return [imgs.innerHTML];
     });
 
-    console.log(elemento);
+    //recortando as imagems
+    let img_pt1 = elemento[0].split('">');
+    //let img_pt2 = img_pt1.map(str => str)
+    console.log(img_pt1);
     browser.close();
 }
 
