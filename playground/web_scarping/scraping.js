@@ -115,7 +115,7 @@ for(let i of link) {
 async function entrar (url) {
       const browser = await puppeteer.launch({ 
         args :  [ '--disable-dev-shm-usage', '--shm-size=1gb' ],
-        headless: false
+        headless: true
       });
     const page = await browser.newPage();
 
@@ -140,17 +140,81 @@ async function entrar (url) {
           cont.push(paragrafos[chaves[i]].innerHTML);
         }
         //categorias
-        let cat = document.querySelectorAll(".genre-tag");
-        let chaves2 = Object.keys(cat), typ = [];
+        let cat = document.querySelector(".single-tags");
+        /*let chaves2 = Object.keys(cat), typ = [];
         for (let i = 0; i < chaves.length; ++i) {
           typ.push(cat[chaves2[i]].innerHTML);
-        }
-        return [cont[1], typ];
+        }*/
+        //capitulos
+        let cap = document.querySelector(".row.rowls");
+        /*let chaves2 = Object.keys(cap), typ = [];
+        for (let i = 0; i < chaves.length; ++i) {
+          typ.push(cap[chaves2[i]].innerHTML);
+        }*/
+        return [cont[1], cat.innerHTML, cap.innerHTML];
     });
+    //cortar os capitulos - link, capitulo
+    let capitulos = elemento[2].split("</a>");
 
-    console.log(elemento);
-    
+    let l_corte1 = capitulos.map(str => str.split('href="'));
+    //console.log(l_corte1[1][1]);
+    let l_corte2 = l_corte1.map(arr => {
+      if (arr.length >= 2){
+        return arr[1].split('" class=');
+      } } );
+    //console.log(l_corte2); o link esta na posicao 0;
+
+    let n_corte1 = capitulos.map(str => str.split('s-infs">'));
+
+    let n_corte2 = n_corte1.map(arr => {
+      if (arr.length >= 2){
+        return arr[1].split('<small><d');
+      } } );
+    //console.log(n_corte2); o nome esta na posicao 0;
+    //corte para retirar uma falha
+    n_corte2.pop();
+    l_corte2.pop();
+    //delete l_corte1, n_corte1, capitulos;
+    let a_final = l_corte2.map((arr, ind)=> [n_corte2[ind][0],arr[0]]);
+    //[n_corte2[ind][0],arr[0]]
+    let data = [elemento[0], elemento[1], a_final];
+    console.log(data);
     await browser.close();
 }
 
-entrar('https://mangayabu.top/manga/solo-leveling');
+//entrar('https://mangayabu.top/manga/solo-leveling');
+
+//leitor de capitulos
+
+async function leitor (url) {
+      const browser = await puppeteer.launch({ 
+        args :  [ '--disable-dev-shm-usage', '--shm-size=1gb' ],
+        headless: false
+      });
+    const page = await browser.newPage();
+
+     /*await page.setRequestInterception(true);
+    page.on('request', (req) => {
+        if(req.resourceType() === 'image'){
+            req.abort();
+            }
+            else {
+            req.continue();
+        }
+    });*/
+    
+    await page.goto(url);
+    page.setDefaultTimeout(50000);
+    await page.waitForTimeout(3000);
+
+    const elemento = await page.evaluate(()=>{
+      let imgs = document.querySelector(".section.table-of-contents");
+
+      return imgs.innerHTML;
+    });
+
+    console.log(elemento);
+    browser.close();
+}
+
+leitor('https://mangayabu.top/?p=102021');
