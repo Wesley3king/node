@@ -189,7 +189,7 @@ async function entrar (url) {
 async function leitor (url) {
       const browser = await puppeteer.launch({ 
         args :  [ '--disable-dev-shm-usage', '--shm-size=1gb' ],
-        headless: false
+        headless: true
       });
     const page = await browser.newPage();
 
@@ -212,19 +212,28 @@ async function leitor (url) {
       let imgs = document.querySelector(".section.table-of-contents");
       //capa do manga
       let cp = document.querySelector(".manga-cover-single");
-
-      return [cp, imgs.innerHTML];
+      //nome do manga
+      let tit = document.querySelector("h1");
+      //sinopse
+      let sin = document.querySelector('.manga-info-synopsis')
+      return [cp.innerHTML, imgs.innerHTML, tit.innerHTML,sin.innerHTML];
     });
 
     //recortando as imagems
     let img_pt1 = elemento[1].split('">');
     let img_pt2 = img_pt1.map(str => str.split('-src="'));//link na posicaõ 1;
-    //let img_pt2 = img_pt1.map(str => str);
+    
+    //img de capa
+    let f1 = elemento[0].split('" data-');
+    let f2 = f1[0].split('src="');//imagem na posicao 1;
+
+
+
 
     //remove o excesso
     img_pt2.pop();
-    
-    console.log(img_pt2);
+    let data =  [elemento[2], f2[1], elemento[3], img_pt2.map(arr=>arr[1])];
+    //console.log(elemento[3]);
     browser.close();
 }
 
