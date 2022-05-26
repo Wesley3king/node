@@ -141,16 +141,13 @@ async function entrar (url) {
         }
         //categorias
         let cat = document.querySelector(".single-tags");
-        /*let chaves2 = Object.keys(cat), typ = [];
-        for (let i = 0; i < chaves.length; ++i) {
-          typ.push(cat[chaves2[i]].innerHTML);
-        }*/
+        
         //capitulos
         let cap = document.querySelector(".row.rowls");
-        /*let chaves2 = Object.keys(cap), typ = [];
-        for (let i = 0; i < chaves.length; ++i) {
-          typ.push(cap[chaves2[i]].innerHTML);
-        }*/
+        //nome do manga
+        let tit = document.querySelector("h1");
+        //
+        
         return [cont[1], cat.innerHTML, cap.innerHTML];
     });
     //cortar os capitulos - link, capitulo
@@ -182,7 +179,7 @@ async function entrar (url) {
     await browser.close();
 }
 
-//entrar('https://mangayabu.top/manga/solo-leveling');
+entrar('https://mangayabu.top/manga/solo-leveling');
 
 //leitor de capitulos
 
@@ -237,4 +234,4 @@ async function leitor (url) {
     browser.close();
 }
 
-leitor('https://mangayabu.top/?p=102021');
+//leitor('https://mangayabu.top/?p=102021');
