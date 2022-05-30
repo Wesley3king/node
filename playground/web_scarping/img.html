@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>teste de imagem</title>
+    <style>
+        body{
+            margin: 0;
+        }
+        body::-webkit-scrollbar{
+            display: none;
+        }
+        .imagem{
+            background-repeat: no-repeat;
+            background-size: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="post"></div>
+
+    <script>
+        const lugar = document.querySelector(".post");
+        const way = ["./example.png","./example2.png","./example3.png","./example4.png"]
+        const width = window.innerWidth;
+
+
+        class make {
+            
+       fazer (arr) {
+
+        for (let c of arr) {
+           let img = new Image();
+           let t = [];
+                let h = NaN;
+        img.onload = function () {
+            console.log(`width: ${this.width} - height: ${this.height}`);
+            t.push(Number(`${this.width}`));
+            t.push(Number(`${this.height}`));
+            h = ((t[1]*width)/t[0]);
+        console.log(h,  typeof t[0]);
+        let resimg = document.createElement("img");
+        resimg.setAttribute("src",c);
+        resimg.setAttribute("width",width);
+        resimg.setAttribute("height", h);
+
+        lugar.append(resimg);
+        }
+
+        img.src = './example.png';
+    }
+    }
+    }
+        //let height_img = 
+        let imag = new make()
+        imag.fazer(way)
+    </script>
+</body>
+</html>
