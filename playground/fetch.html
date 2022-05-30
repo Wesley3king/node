@@ -19,7 +19,7 @@
         let jso = JSON.stringify({data:{data: url}});
         console.log(`jso : `,jso);
         function send () {
-            fetch("http://127.0.0.1:3000/tst",{headers:{"Content-Type": "application/json","Acess-Control-Allow-Origin":"*"}, method: "POST",body: jso})
+            fetch("http://127.0.0.1:3000/tst",{headers:{"Content-Type": "application/json"}, method: "POST",body: jso})
             .then(res => res.json())
             .then(dara => console.log(dara))
             .catch(e => console.log(e));
