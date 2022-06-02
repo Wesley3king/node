@@ -2,7 +2,7 @@
 
 const http = require('http');
 const eventos = require("events");
-const { Console } = require('console');
+//const { Console } = require('console');
 const emissor = new eventos.EventEmitter();
 
 emissor.on('start',()=> console.log("processo iniciado"));
