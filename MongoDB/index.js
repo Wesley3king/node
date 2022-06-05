@@ -12,17 +12,18 @@ mongoDB.connect(url,(err,banco) =>{
      dbo.collection(colecao).insertOne(obj,(e,res)=>{
          if (e) console.log(e);
          console.log("1 novo curso adicionado a db");
-         banco.close();
+         //banco.close();
      });
 
      //findOne(), find() (procurando dados)
      dbo.collection(colecao).findOne({/* filtros */},(e, res)=>{
          if (e) console.log(e);
           console.log(res);
-         banco.close();
+         //banco.close();
      });
     //convertendo os resultados em array:
-     dbo.collection(colecao).find({/* filtros */}, {projection: {_id:0, canal:0} }).toArray((e, res)=>{
+    const query = {curso: /C./};
+     dbo.collection(colecao).find(query, {projection: {_id:0, canal:0} }).toArray((e, res)=>{
         if (e) console.log(e);
          console.log(res);
         banco.close();
