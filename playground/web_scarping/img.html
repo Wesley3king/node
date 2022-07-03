@@ -23,36 +23,69 @@
 
     <script>
         const lugar = document.querySelector(".post");
-        const way = ["./example.png","./example2.png","./example3.png","./example4.png"]
+        const way = ["./example.png","./example2.png","./example3.png","./example4.png","https://img-host.filestatic3.xyz/mangas_files/eleceed/image_eleceed_xmedium.webp","https://img-host.filestatic3.xyz/mangas_files/kakkou-no-iinazuke/image_kakkou-no-iinazuke_xmedium.webp", "https://img-host.filestatic3.xyz/mangas_files/kanojo-okarishimasu/image_kanojo-okarishimasu_xmedium.webp"]
         const width = window.innerWidth;
-
+        const data = [];
 
         class make {
+            async fazer (arr) {
+                //let data = [];
+                for (let c of arr) {
+                    let img = new Image();
+                    let t = [];
+                    let h = NaN;
+                    const mm = () => {
+                        console.log(`width: ${this.width} - height: ${this.height}`);
+                        t.push(Number(`${this.width}`));
+                        t.push(Number(`${this.height}`));
+                        h = ((t[1]*width)/t[0]);
+                        console.log(h,  typeof t[0]);
+                        let resimg = document.createElement("img");
+                        resimg.setAttribute("src",c);
+                        resimg.setAttribute("width",width);
+                        resimg.setAttribute("height", h);
+
+                        data.push(resimg);
+
+                    }
+
+                    img.onload = function () {
+
+                        mm();
+                        /*console.log(`width: ${this.width} - height: ${this.height}`);
+                        t.push(Number(`${this.width}`));
+                        t.push(Number(`${this.height}`));
+                        h = ((t[1]*width)/t[0]);
+                        console.log(h,  typeof t[0]);
+                        let resimg = document.createElement("img");
+                        resimg.setAttribute("src",c);
+                        resimg.setAttribute("width",width);
+                        resimg.setAttribute("height", h);
+
+                        //lugar.append(resimg);
+                        return resimg;*/
+                    }
+                    
+                    img.src = './example.png';
+                    /*let dataa = await setTimeout(()=> {
+                        let resimg = document.createElement("img");
+                        resimg.setAttribute("src",c);
+                        resimg.setAttribute("width",window.innerWidth);
+                        resimg.setAttribute("height", ((window.innerWidth*img.height)/img.width));
+                        lugar.append(resimg);
+                    }, 5000)
+                    console.log(img.width);
+                    lugar.append(dataa);*/
+                }
+                setTimeout(()=> {
+                for (let i in data) {
+                    lugar.append(data[i]);
+                }
+            },3000)
             
-       fazer (arr) {
+            }
 
-        for (let c of arr) {
-           let img = new Image();
-           let t = [];
-                let h = NaN;
-        img.onload = function () {
-            console.log(`width: ${this.width} - height: ${this.height}`);
-            t.push(Number(`${this.width}`));
-            t.push(Number(`${this.height}`));
-            h = ((t[1]*width)/t[0]);
-        console.log(h,  typeof t[0]);
-        let resimg = document.createElement("img");
-        resimg.setAttribute("src",c);
-        resimg.setAttribute("width",width);
-        resimg.setAttribute("height", h);
-
-        lugar.append(resimg);
         }
-
-        img.src = './example.png';
-    }
-    }
-    }
         //let height_img = 
         let imag = new make()
         imag.fazer(way)
