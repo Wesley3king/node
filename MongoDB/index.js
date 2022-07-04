@@ -1,5 +1,5 @@
 const mongoDB = require("mongodb").MongoClient;
-const url = "mongodb+srv://king_of_shadows:fC2amEpt68SwKJCc@cluster0.mj7rklk.mongodb.net/?retryWrites=true&w=majority";
+const url = "";
 
 //realizando a conexao com o cluster
 mongoDB.connect(url,async (err,banco) =>{
